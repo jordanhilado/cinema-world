@@ -3,7 +3,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
-import spray.json.DefaultJsonProtocol
+import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -11,7 +11,7 @@ case class Movie(title: String, year: Int)
 
 // JSON (un)marshalling support
 trait JsonSupport extends SprayJsonSupport with DefaultJsonProtocol {
-  implicit val movieFormat = jsonFormat2(Movie)
+  implicit val movieFormat: RootJsonFormat[Movie] = jsonFormat2(Movie)
 }
 
 object Main extends App with JsonSupport {

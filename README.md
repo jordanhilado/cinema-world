@@ -44,3 +44,8 @@ The requirements listed below are also the suggested order of implementation.  W
 - Provide your code in a clean, organized repository on GitHub or a similar platform.
 - Ensure all dependencies are properly managed for easy setup.
 - Submit your repository link along with any necessary setup instructions via the provided submission form.
+---
+### How to run
+`sbt run`
+
+http://localhost:8080/movies
