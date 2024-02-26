@@ -45,14 +45,14 @@ case class Reservation(
     timestamp: String
 )
 
-/** This controller creates an `Action` to handle HTTP requests to the
-  * application's home page.
-  */
 @Singleton
 class HomeController @Inject() (cc: ControllerComponents)(implicit
     assetsFinder: AssetsFinder
 ) extends AbstractController(cc) {
 
+  /*
+  * Load MOVIES_DATA.json content and parse it into a List[Movie]
+  */
   val moviesContent: String = fromFile("public/data/MOVIES_DATA.json").mkString
   val moviesJSON: JsValue = Json.parse(moviesContent)
   implicit val movieDecoder: Decoder[Movie] = Decoder.forProduct5(
@@ -69,6 +69,9 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
   }
   // println("moviesData:", moviesData)
 
+  /*
+  * Load SHOWTIMES_DATA.json content and parse it into a List[Showtime]
+  */
   val showtimesContent: String = fromFile(
     "public/data/SHOWTIMES_DATA.json"
   ).mkString
@@ -89,6 +92,9 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
     }
   // println("showtimesData:", showtimesData)
 
+  /*
+  * Define JSON Writes for Reservation type
+  */
   implicit val reservationWrites: Writes[Reservation] = (
     (JsPath \ "reservation_id").write[String] and
       (JsPath \ "showtime_id").write[Int] and
@@ -98,6 +104,14 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
       (JsPath \ "timestamp").write[String]
   )(unlift(Reservation.unapply))
 
+  /*
+  * Movies table definition
+  * movie_id: A unique identifier for the movie
+  * title: The title of the movie
+  * genre: The genre of the movie
+  * runtime_minutes: The runtime of the movie in minutes
+  * release_date: The release date of the movie in "YYYY-MM-DD" format
+  */
   class Movies(tag: Tag)
       extends Table[(Int, String, String, Int, String)](tag, "movies") {
     def movie_id = column[Int]("movie_id", O.PrimaryKey)
@@ -109,6 +123,15 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
   }
   val movies_table = TableQuery[Movies]
 
+  /*
+  * Showtimes table definition
+  * showtime_id: A unique identifier for the showtime
+  * movie_id: A foreign key to the movie_id in the movies table
+  * date: The date of the showtime in "YYYY-MM-DD" format
+  * time: The time of the showtime in "HH:MM" format
+  * capacity: The total number of seats available for the showtime
+  * reservations: The total number of seats reserved for the showtime
+  */
   class Showtimes(tag: Tag)
       extends Table[(Int, Int, String, String, Int, Int)](tag, "showtimes") {
     def showtime_id = column[Int]("showtime_id", O.PrimaryKey)
@@ -122,6 +145,15 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
   }
   val showtimes_table = TableQuery[Showtimes]
 
+  /*
+  * Reservations table definition
+  * reservation_id: A unique identifier for the reservation
+  * showtime_id: A foreign key to the showtime_id in the showtimes table
+  * name: The name of the person making the reservation
+  * email: The email of the person making the reservation
+  * seats: The number of seats reserved
+  * timestamp: The timestamp of the reservation in "YYYY-MM-DDTHH:MM:SS" format
+  */
   class Reservations(tag: Tag)
       extends Table[(String, Int, String, String, Int, String)](
         tag,
@@ -141,10 +173,16 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
 
   val db = Database.forConfig("cinemaWorldDB")
 
+  /* 
+  * Main homepage
+  */
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
   }
 
+  /* 
+  * Initialize the movies, showtimes, and reservations tables
+  */
   def setup = Action {
     val setup = DBIO.seq(
       (movies_table.schema).create,
@@ -176,6 +214,9 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
     Ok("Database setup complete.")
   }
 
+  /* 
+  * Route for returning a list of all the movies
+  */
   def movies = Action.async { implicit request =>
     // Ok(views.html.movies(moviesData))
     // Ok(moviesJSON)
@@ -206,6 +247,9 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
     }
   }
 
+  /* 
+  * Route for returning a list of all the showtimes
+  */
   def showtimes = Action.async { implicit request =>
     // Ok(views.html.showtimes(showtimesData))
     // Ok(showtimesJSON)
@@ -238,6 +282,9 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
     }
   }
 
+  /* 
+  * Route for returning a movie's details
+  */
   def movie(movie_id: Int) = Action.async { implicit request =>
     // val movie = moviesJSON
     //   .as[JsArray]
@@ -318,6 +365,9 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
     }
   }
 
+  /* 
+  * Route for reserving seats for a showtime
+  */
   def reserve(showtime_id: Int, name: String, email: String, seats: Int) =
     Action.async { implicit request =>
       db.run(
@@ -437,6 +487,9 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
       // Ok(reservationJSON)
     }
 
+  /* 
+  * Route for cancelling a reservation
+  */
   def cancel(reservation_id: String) = Action.async { implicit request =>
     db.run(
       reservations_table

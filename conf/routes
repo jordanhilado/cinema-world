@@ -4,15 +4,27 @@
 
 # ~~~~
 
+# Returns all movies
+
 GET /movies controllers.HomeController.movies
+
+# Returns all showtimes
 
 GET /showtimes controllers.HomeController.showtimes
 
+# Returns a movie's details including showtimes
+
 GET /movie controllers.HomeController.movie(movie_id: Int)
+
+# Sets up all databases for initial setup
 
 GET /setup controllers.HomeController.setup
 
+# Cancels a reservation
+
 GET /cancel controllers.HomeController.cancel(reservation_id: String)
+
+# Books a reservation
 
 POST /reserve controllers.HomeController.reserve(showtime_id: Int, name: String, email: String, seats: Int)
 

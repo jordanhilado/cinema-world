@@ -26,12 +26,14 @@ Author: Jordan Ali Hilado, jordanalihilado@gmail.com
 
 ### Running locally
 
-1. Create database connection in `application.conf`
+1. At the bottom of `application.conf`, replace the `cinemaWorldDB` fields with your own database credentials
 2. From root, run `sbt run`
    - Application homepage: http://localhost:9000/
-3. Run setup by running the `http://localhost:9000/setup` endpoint
+3. Run setup by accessing the `http://localhost:9000/setup` endpoint
 
-## Endpoints
+## Architecture
+
+### Endpoints
 
 | Method | Endpoint   | Controller                                                           | Description                                                      |
 | ------ | ---------- | -------------------------------------------------------------------- | ---------------------------------------------------------------- |
@@ -42,8 +44,15 @@ Author: Jordan Ali Hilado, jordanalihilado@gmail.com
 | POST   | /reserve   | `reserve(showtime_id: Int, name: String, email: String, seats: Int)` | Creates a reservation                                            |
 | GET    | /cancel    | `cancel(reservation_id: String)`                                     | Cancels a reservation                                            |
 
+### Database schema
+
+![Database schema for 'movies', 'showtimes', and 'reservations' tables](image.png)
+
 ## Testing
 
 Run `sbt test` to run tests for business logic and endpoints.
 
 > Custom tests for business logic and endpoints are located in `test/FunctionalSpec.scala`
+
+### Other references
+- [Mockaroo](https://www.mockaroo.com/): Fake data generator
