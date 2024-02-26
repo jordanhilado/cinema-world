@@ -1,0 +1,28 @@
+@(movieDetails: controllers.MovieDetails)(implicit assetsFinder: AssetsFinder) @main("Movie") {
+  <section id="top">
+    <div class="wrapper">
+      <h1>@movieDetails.title Details</h1>
+    </div>
+  </section>
+  <ul>
+    <h2>@movieDetails.title</h2>
+    <li>
+      <b>Genre:</b> @movieDetails.genre <br>
+      <b>Runtime (minutes):</b> @movieDetails.runtime_minutes <br>
+      <b>Release Date:</b> @movieDetails.release_date
+    </li>
+    <br/>
+    <p>Showtimes</p>
+    @for(showtime <- movieDetails.showtimes) {
+      <li>
+        <b>ID:</b> @showtime.showtime_id <br>
+        <b>Date:</b> @showtime.date <br>
+        <b>Time:</b> @showtime.time <br>
+        <b>Capacity:</b> @showtime.capacity <br>
+        <b>Reservations:</b> @showtime.reservations
+      </li>
+      <br/>
+    }
+  </ul>
+  }
+  

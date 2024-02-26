@@ -1,0 +1,16 @@
+@(reservation: controllers.Reservation)(implicit assetsFinder: AssetsFinder) @main("Reserve") {
+  <section id="top">
+    <div class="wrapper">
+      <h1>Reservation Details</h1>
+    </div>
+  </section>
+  <ul>
+      <b>Reservation ID:</b> @reservation.reservation_id <br>
+      <b>Showtime ID:</b> @reservation.showtime_id <br>
+      <b>Name:</b> @reservation.name <br>
+      <b>Email:</b> @reservation.email <br>
+      <b># Seats:</b> @reservation.seats <br>
+      <b>Timestamp:</b> @reservation.timestamp
+  </ul>
+  }
+  

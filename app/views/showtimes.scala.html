@@ -1,0 +1,21 @@
+@(showtimes: List[controllers.Showtime])(implicit assetsFinder: AssetsFinder) @main("Showtimes") {
+  <section id="top">
+    <div class="wrapper">
+      <h1>Showtimes</h1>
+    </div>
+  </section>
+  <ul>
+    @for(showtime <- showtimes) {
+      <li>
+        <b>ID:</b> @showtime.showtime_id <br>
+        <b>Movie ID:</b> @showtime.movie_id <br>
+        <b>Date:</b> @showtime.date <br>
+        <b>Time:</b> @showtime.time <br>
+        <b>Capacity:</b> @showtime.capacity <br>
+        <b>Reservations:</b> @showtime.reservations
+      </li>
+      <br/>
+    }
+  </ul>
+  }
+  
