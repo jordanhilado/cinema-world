@@ -177,7 +177,7 @@ class HomeController @Inject() (cc: ControllerComponents)(implicit
   * Main homepage
   */
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+    Ok(views.html.index("Welcome to Cinema World+!"))
   }
 
   /* 

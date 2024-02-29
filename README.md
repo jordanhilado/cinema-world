@@ -29,7 +29,8 @@ Author: Jordan Ali Hilado, jordanalihilado@gmail.com
 1. At the bottom of `application.conf`, replace the `cinemaWorldDB` fields with your own database credentials
 2. From root, run `sbt run`
    - Application homepage: http://localhost:9000/
-3. Run setup by accessing the `http://localhost:9000/setup` endpoint
+3. Run database setup by accessing the `http://localhost:9000/setup` endpoint
+4. You may now begin testing endpoints!
 
 ## Architecture
 
