@@ -32,6 +32,12 @@ Author: Jordan Ali Hilado, jordanalihilado@gmail.com
 3. Run database setup by accessing the `http://localhost:9000/setup` endpoint
 4. You may now begin testing endpoints!
 
+### Docker setup
+
+The `docker-setup` branch at https://github.com/jordanhilado/cinema-world/tree/docker-setup shows my latest attempt at containerizing this application. You will be able to setup the database and client through Docker Compose, as the client is pulled from the following Docker Hub repository: https://hub.docker.com/repository/docker/dando500/cinema-world/general.
+
+As of now, the connections between database and client need to be reassessed in order to work and so running locally without Docker is currently recommended.
+
 ## Architecture
 
 ### Endpoints
